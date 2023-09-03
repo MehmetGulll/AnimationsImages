@@ -5,26 +5,25 @@ window.onmousedown = e =>{
 }
 
 window.onmousemove = e =>{
-    if(track.dataset.mouseDownat ==="0") return;
-    const mouseDelta = parseFloat(track.dataset.mouseDownat)- e.clientX,
+    if(track.dataset.mouseDownAt ==="0") return;
+    const mouseDelta = parseFloat(track.dataset.mouseDownAt)- e.clientX,
     maxDelta = window.innerWidth / 2;
 
     const percentage = (mouseDelta / maxDelta) * -100;
-     nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage;
+     nextPercentage = parseFloat(track.dataset.prevPercentage) + percentage,
+     nextPercentage = Math.min(Math.max(nextPercentage,-100),0)
     track.dataset.percentage = nextPercentage;
     track.animate({
         transform : `translate(${nextPercentage}%, -50%)`
     },{duration:1200, fill: "forwards"})
-   
 }
 
 window.onmouseup = ()=>{
     track.dataset.mouseDownAt = "0";
-    track.dataset.prevPercentage = track.dataset.percentage
-    for(const image of track.getElementsByClassName("image")){
-        image.style.objectPosition = `${nextPercentage+100}% 50%`;
+    track.dataset.prevPercentage = track.dataset.percentage;
+    for(const image of track.getElementsByClassName("image")) {
         image.animate({
-            objectPosition: `${100 + nextPercentage}% center`
-        }, {duration:1200, fill: "forwards"});
-    }
+          objectPosition: `${100 + nextPercentage}% center`
+        }, { duration: 1200, fill: "forwards" });
+      }
 }
